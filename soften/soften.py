@@ -10,16 +10,16 @@ from collections import defaultdict
 
 def find_all_hardlinks(directory):
 
-    all_hardlinks = defaultdict(list)
+    all_hardlinks_dict = defaultdict(list)
 
     for root, dirs, files in os.walk(directory):
         for f in files:
             path = os.path.join(root,f)
             stat = os.stat(path)
             if stat.st_nlink > 1:
-                all_hardlinks[stat.st_ino].append(path)
+                all_hardlinks_dict[stat.st_ino].append(path)
 
-    return all_hardlinks.values()
+    return [sorted(hardlinks) for hardlinks in all_hardlinks_dict.values()]
 
 def soften_hardlinks(hardlinks):
     source = hardlinks[0]
