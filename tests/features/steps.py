@@ -4,10 +4,13 @@ import subprocess
 
 from lettuce import *
 
-def touch(filepath):
+def mkdir_for_file(filepath):
     dirs = os.path.dirname(filepath)
     if not os.path.isdir(dirs):
         os.makedirs(dirs)
+
+def touch(filepath):
+    mkdir_for_file(filepath)
     open(filepath,'w').close()
 
 def check_soft_link(filepath, expected_to):
@@ -22,6 +25,7 @@ def create_hardlinked_files(step):
     source = files[0]
     touch(source)
     for f in files[1:]:
+        mkdir_for_file(f)
         os.link(source, f)
 
 @step("I run 'soften (.+)'")
