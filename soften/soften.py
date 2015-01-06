@@ -33,8 +33,11 @@ def soften_hardlinks(hardlinks,relative_path=False):
 def parse_command_line():
     parser = argparse.ArgumentParser(description='Change hard links to ' \
                                                  'symbolic links.')
-    parser.add_argument('-v', '--verbose', action='store_true')
-    parser.add_argument('-t', '--log-to-file', action='store')
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        help='Print debug message')
+    parser.add_argument('-t', '--log-to-file', metavar='FILENAME',
+                        action='store',
+                        help='Log debug messages to file instead of stdout')
     parser.add_argument('-d', '--relative-path', action='store_true',
                         help='Links to relative path instead of absolute.')
     parser.add_argument('root_directory', 
