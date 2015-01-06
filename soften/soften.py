@@ -24,11 +24,12 @@ def soften_hardlinks(hardlinks,relative_path=False):
     source = hardlinks[0]
     for dest in hardlinks[1:]:
         os.remove(dest)
-        logging.debug('rm %s' % (dest,))
         if relative_path:
-            source = p.relpath(source, p.dirname(dest))
-        os.symlink(source, dest)
-        logging.debug('ln %s %s' % (source,dest))
+            actual_source = p.relpath(source, p.dirname(dest))
+        else:
+            actual_source = source
+        os.symlink(actual_source, dest)
+        logging.debug('ln %s %s' % (actual_source,dest))
 
 def parse_command_line():
     parser = argparse.ArgumentParser(description='Change hard links to ' \
