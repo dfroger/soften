@@ -5,8 +5,8 @@ import os.path as p
 import shutil
 import functools
 
-@before.all
-def setup_workdir():
+@before.each_scenario
+def setup_workdir(scenario):
     this_script_dir = p.dirname(p.abspath(__file__))
     world.workdir = p.realpath(p.join(this_script_dir, '..', 'workdir'))
     world.join_workdir = functools.partial(p.join, world.workdir)

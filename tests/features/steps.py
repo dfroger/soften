@@ -10,6 +10,12 @@ def touch(filepath):
         os.makedirs(dirs)
     open(filepath,'w').close()
 
+def check_soft_link(filepath, expected_to):
+    to = os.readlink(filepath)
+    if not to == expected_to: 
+        raise OSError, "%s is softlinked to %s, not %s" % (
+                filepath, to, expected_to)
+
 @step("I create the following hardlinked files:")
 def create_hardlinked_files(step):
     files = [ world.join_workdir(h['file']) for h in step.hashes ]
@@ -24,10 +30,14 @@ def run_soften(step, soften_args):
     subprocess.check_call(cmd.split(), cwd=world.workdir)
         
 @step("the following files are softlinked to '(.+)'")
-def are_softlinked(step, filename):
+def are_softlinked_to(step, expected_to):
     files = [ world.join_workdir(h['file']) for h in step.hashes ]
-    expected_to = p.realpath(world.join_workdir(filename))
     for f in files:
-        to = p.realpath(world.join_workdir(os.readlink(f)))
-        if not to == expected_to: 
-            raise OSError, "%s is not a softlink to %s" % (to, expected_to)
+        check_soft_link(f, expected_to)
+        
+@step("the following files are softlinked to the absolute path of '(.+)'")
+def are_softlinked_to_absolute_path(step, expected_to):
+    files = [ world.join_workdir(h['file']) for h in step.hashes ]
+    expected_to = p.realpath(world.join_workdir(expected_to))
+    for f in files:
+        check_soft_link(f, expected_to)
