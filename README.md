@@ -19,6 +19,4 @@ Usage:
                             Log debug messages to file instead of stdout
       -d, --relative-path   Links to relative path instead of absolute.
 
-
-
-tests/features/soften.feature may also be a source of documentation.
+[Functional tests](tests/features/soften.feature) may also be a source of documentation.
