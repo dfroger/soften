@@ -26,7 +26,9 @@ def create_hardlinked_files(step):
 
 @step("I run 'soften (.+)'")
 def run_soften(step, soften_args):
-    cmd = "python %s %s" % (world.soften, soften_args,)
+    logfile = world.join_workdir('soften.log')
+    cmd = "python %s --verbose --log-to-file=%s %s" % (
+            world.soften, logfile, soften_args,)
     subprocess.check_call(cmd.split(), cwd=world.workdir)
         
 @step("the following files are softlinked to '(.+)'")
