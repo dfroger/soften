@@ -1,0 +1,7 @@
+0.0.1
+Initial version
+
+0.0.2
+add verbose and log to file command line options
+add option to create relative path link
+add function tests using lettuce
